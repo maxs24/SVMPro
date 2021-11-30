@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 import sklearn.svm as svm
+import pygame
 
 
 def create_dataset(points):
@@ -67,7 +68,6 @@ def predict_array(model, points, colors):
     df_y = pd.DataFrame(data=y)
     data_frame = pd.concat([df_x, df_y], ignore_index=True, axis=1)
     data_frame.columns = ['x', 'y']
-    W = np.asarray(svm.SVC.coef_)
     answers = model.predict(data_frame)
     for i in range(len(answers)):
         if answers[i] == 0:
@@ -76,8 +76,22 @@ def predict_array(model, points, colors):
             colors[i] = (0, 255, 0)
 
 
-#def return_line(model, points, size):
+def return_line(model):
+    W = model.coef_[0]
+    I = model.intercept_
 
+    k = -W[0]/W[1]
+    b = -I[0]/W[1]
+
+    return [k, b]
+
+
+def draw_line(screen, line):
+    x_min = 0;
+    y_min = line[0] * x_min + line[1]
+    x_max = 600
+    y_max = line[0] * x_max + line[1]
+    pygame.draw.line(screen, (0,0,0), [x_min, y_min], [x_max, y_max])
 
 
 

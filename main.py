@@ -7,6 +7,7 @@ if __name__ == '__main__':
 
     points, colors = F.random_points(size)
     model = F.svm_fit(points, size)
+    line = []
 
     screen = pygame.display.set_mode((600, 400), pygame.RESIZABLE)
     pygame.display.update()
@@ -24,8 +25,11 @@ if __name__ == '__main__':
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_r:
                     F.predict_array(model, points, colors)
+                    line = F.return_line(model)
                     isdrawline = True
             screen.fill('WHITE')
             for i in range(len(points)):
                 pygame.draw.circle(screen, colors[i], points[i], r)
+                if isdrawline:
+                    F.draw_line(screen, line)
             pygame.display.update()
